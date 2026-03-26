@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #080808;
+  --color-background: #06060a;
   --color-foreground: #ededed;
   --color-muted: #888888;
   --color-accent: #00E5FF;
@@ -24,12 +24,12 @@ html {
 }
 
 body {
-  background: #080808;
+  background: #06060a;
   color: #ededed;
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
   min-height: 100vh;
-  min-height: 100dvh;
+  min-height: 100dvh; /* progressive enhancement — falls back to 100vh */
 }
 
 /* Noise Grain Overlay */
@@ -45,30 +45,46 @@ body::after {
   background-size: 256px 256px;
 }
 
-/* Mesh Gradient Background */
+/* Deep Charcoal + Navy Background */
 .mesh-gradient {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: radial-gradient(ellipse at 20% 50%, rgba(0, 30, 60, 0.4) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 20%, rgba(0, 50, 80, 0.3) 0%, transparent 50%),
-    radial-gradient(ellipse at 60% 80%, rgba(0, 40, 70, 0.2) 0%, transparent 50%),
-    #080808;
+  background:
+    radial-gradient(ellipse at 20% 40%, rgba(10, 22, 50, 0.5) 0%, transparent 60%),
+    radial-gradient(ellipse at 75% 25%, rgba(15, 25, 55, 0.4) 0%, transparent 50%),
+    radial-gradient(ellipse at 55% 75%, rgba(8, 18, 40, 0.3) 0%, transparent 55%),
+    #06060a;
 }
 
+/* Slow volumetric drift */
 .mesh-gradient::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 40% 30%, rgba(0, 60, 90, 0.2) 0%, transparent 60%),
-    radial-gradient(ellipse at 70% 60%, rgba(0, 40, 60, 0.15) 0%, transparent 50%);
-  animation: meshMove 20s ease-in-out infinite alternate;
+  background:
+    radial-gradient(ellipse at 35% 30%, rgba(20, 50, 120, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 65% 65%, rgba(15, 40, 90, 0.06) 0%, transparent 50%);
+  animation: ambientDrift 25s ease-in-out infinite alternate;
 }
 
-@keyframes meshMove {
+.mesh-gradient::after {
+  content: "";
+  position: absolute;
+  inset: -5%;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(20, 70, 160, 0.03) 0%, transparent 60%);
+  animation: ambientPulse 10s ease-in-out infinite;
+}
+
+@keyframes ambientDrift {
   0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-20px, 15px) scale(1.05); }
-  100% { transform: translate(15px, -10px) scale(0.98); }
+  100% { transform: translate(-15px, 10px) scale(1.03); }
+}
+
+@keyframes ambientPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
 
 /* Scrollbar - all browsers */
@@ -76,7 +92,7 @@ body::after {
   width: 4px;
 }
 ::-webkit-scrollbar-track {
-  background: #080808;
+  background: #06060a;
 }
 ::-webkit-scrollbar-thumb {
   background: #333;
@@ -85,7 +101,7 @@ body::after {
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #333 #080808;
+  scrollbar-color: #333 #06060a;
 }
 
 /* Selection */
@@ -94,9 +110,29 @@ body::after {
   color: #fff;
 }
 
-/* dvh fallback */
-@supports not (height: 100dvh) {
-  .min-h-dvh { min-height: 100vh; }
+/* dvh progressive enhancement */
+@supports (height: 100dvh) {
+  body { min-height: 100dvh; }
+}
+
+/* Firefox backdrop-filter fallback */
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .backdrop-blur-sm {
+    background-color: rgba(6, 6, 10, 0.9) !important;
+  }
+}
+
+/* WebkitTextStroke Firefox fallback */
+@supports not (-webkit-text-stroke: 1px black) {
+  .ghost-text-fallback {
+    color: rgba(160, 165, 185, 0.15) !important;
+    text-shadow:
+      -1px -1px 0 rgba(140, 155, 190, 0.1),
+      1px -1px 0 rgba(140, 155, 190, 0.1),
+      -1px 1px 0 rgba(140, 155, 190, 0.1),
+      1px 1px 0 rgba(140, 155, 190, 0.1),
+      0 0 60px rgba(20, 70, 160, 0.08);
+  }
 }
 
 /* Glow utility */
@@ -127,7 +163,8 @@ body::after {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .mesh-gradient::before {
+  .mesh-gradient::before,
+  .mesh-gradient::after {
     animation: none;
   }
 }

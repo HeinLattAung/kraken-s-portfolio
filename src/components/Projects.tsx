@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useState, useCallback } from "react";
+import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
 import { VideoPreview } from "./VideoPreview";
 
 interface Project {
@@ -69,6 +69,24 @@ function StickyProjectCard({
   const scale = useTransform(scrollYProgress, [0, 1], [0.92, 1]);
   const opacity = useTransform(scrollYProgress, [0, 0.3], [0.3, 1]);
 
+  // Glass-reveal: track mouse position for iridescent light sweep
+  const [isHovered, setIsHovered] = useState(false);
+  const sweepX = useMotionValue(0);
+  const sweepY = useMotionValue(0);
+  // Weighted spring: quick flick start, heavy smooth settle
+  const smoothSweepX = useSpring(sweepX, { stiffness: 150, damping: 25 });
+  const smoothSweepY = useSpring(sweepY, { stiffness: 150, damping: 25 });
+
+  const handleCardMouse = useCallback(
+    (e: React.MouseEvent) => {
+      const rect = cardRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      sweepX.set(((e.clientX - rect.left) / rect.width) * 100);
+      sweepY.set(((e.clientY - rect.top) / rect.height) * 100);
+    },
+    [sweepX, sweepY]
+  );
+
   return (
     <div
       ref={cardRef}
@@ -78,9 +96,12 @@ function StickyProjectCard({
         top: `calc(10vh + ${index * 2}vh)`,
         zIndex: index + 1,
       }}
+      onMouseMove={handleCardMouse}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <motion.div
-        className="overflow-hidden"
+        className="overflow-hidden relative"
         style={{
           scale,
           opacity,
@@ -89,6 +110,33 @@ function StickyProjectCard({
           border: "1px solid rgba(255,255,255,0.06)",
         }}
       >
+        {/* Glass-reveal iridescent light sweep overlay */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            zIndex: 10,
+            borderRadius: "inherit",
+            opacity: isHovered ? 1 : 0,
+            transition: "opacity 0.4s ease",
+            background: useTransform(
+              [smoothSweepX, smoothSweepY],
+              ([x, y]: number[]) =>
+                `radial-gradient(600px circle at ${x}% ${y}%, rgba(200, 170, 100, 0.07), rgba(0, 229, 255, 0.04) 40%, transparent 70%)`
+            ),
+          }}
+        />
+        {/* Glass border glow on hover */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            zIndex: 10,
+            borderRadius: "inherit",
+            opacity: isHovered ? 1 : 0,
+            transition: "opacity 0.5s ease",
+            border: `1px solid rgba(200, 170, 100, 0.12)`,
+            boxShadow: "inset 0 0 60px rgba(200, 170, 100, 0.03), 0 0 30px rgba(0, 229, 255, 0.03)",
+          }}
+        />
         <div className="flex flex-col lg:flex-row">
           {/* Left - Info */}
           <div

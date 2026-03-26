@@ -8,7 +8,7 @@ export function Contact() {
       id="contact"
       className="relative flex items-center"
       style={{
-        minHeight: "min(100dvh, 800px)",
+        minHeight: "min(100vh, 800px)",
         padding: "clamp(3rem, 8vh, 8rem) clamp(1.25rem, 5vw, 6rem)",
       }}
     >

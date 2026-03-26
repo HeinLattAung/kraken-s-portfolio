@@ -34,7 +34,7 @@ export function MobileMenu({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 bg-[#080808] z-[90] flex flex-col items-center justify-center md:hidden"
+          className="fixed inset-0 bg-[#06060a] z-[90] flex flex-col items-center justify-center md:hidden"
           style={{ touchAction: "none" }}
           initial={{ opacity: 0, clipPath: "circle(0% at top right)" }}
           animate={{ opacity: 1, clipPath: "circle(150% at top right)" }}
@@ -47,8 +47,8 @@ export function MobileMenu({
             style={{
               top: "clamp(1rem, 3vh, 1.5rem)",
               right: "clamp(1.25rem, 5vw, 1.5rem)",
-              width: "44px",
-              height: "44px",
+              width: "48px",
+              height: "48px",
             }}
             aria-label="Close menu"
           >
