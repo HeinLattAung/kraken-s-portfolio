@@ -6,13 +6,14 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="relative flex items-center"
+      className="relative flex flex-col"
       style={{
-        minHeight: "min(100vh, 800px)",
-        padding: "clamp(3rem, 8vh, 8rem) clamp(1.25rem, 5vw, 6rem)",
+        minHeight: "min(60vh, 800px)",
+        padding: "clamp(3rem, 8vh, 8rem) clamp(1.25rem, 5vw, 6rem) clamp(1.5rem, 3vh, 3rem)",
       }}
     >
-      <div className="w-full mx-auto" style={{ maxWidth: "80rem" }}>
+      <div className="flex-1 flex items-center">
+        <div className="w-full mx-auto" style={{ maxWidth: "80rem" }}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -83,22 +84,24 @@ export function Contact() {
           ))}
         </motion.div>
 
-        {/* Footer */}
-        <div
-          className="border-t border-white/5 flex flex-col sm:flex-row items-center justify-between text-center sm:text-left"
-          style={{
-            marginTop: "clamp(3rem, 8vh, 8rem)",
-            paddingTop: "clamp(0.75rem, 2vw, 1.5rem)",
-            gap: "clamp(0.25rem, 0.8vw, 0.75rem)",
-          }}
-        >
-          <p className="text-[#444] font-sans" style={{ fontSize: "clamp(0.55rem, 0.9vw, 0.7rem)", letterSpacing: "0.05em" }}>
-            &copy; {new Date().getFullYear()} Hein Latt Aung. All rights reserved.
-          </p>
-          <p className="text-[#444] font-sans" style={{ fontSize: "clamp(0.55rem, 0.9vw, 0.7rem)", letterSpacing: "0.05em" }}>
-            Designed & Built with precision
-          </p>
         </div>
+      </div>
+
+      {/* Footer */}
+      <div
+        className="w-full mx-auto border-t border-white/5 flex flex-col sm:flex-row items-center justify-between text-center sm:text-left mt-auto"
+        style={{
+          maxWidth: "80rem",
+          paddingTop: "clamp(0.75rem, 2vw, 1.5rem)",
+          gap: "clamp(0.25rem, 0.8vw, 0.75rem)",
+        }}
+      >
+        <p className="text-[#444] font-sans" style={{ fontSize: "clamp(0.55rem, 0.9vw, 0.7rem)", letterSpacing: "0.05em" }}>
+          &copy; {new Date().getFullYear()} Hein Latt Aung. All rights reserved.
+        </p>
+        <p className="text-[#444] font-sans" style={{ fontSize: "clamp(0.55rem, 0.9vw, 0.7rem)", letterSpacing: "0.05em" }}>
+          Designed & Built with precision
+        </p>
       </div>
     </section>
   );
