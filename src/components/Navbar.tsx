@@ -27,10 +27,12 @@ export function Navbar() {
             fontSize: "clamp(0.6rem, 1.1vw, 0.75rem)",
             letterSpacing: "0.35em",
             fontWeight: 500,
-            background: "linear-gradient(135deg, #c0c0c8 0%, #8a8a95 40%, #e0e0e5 60%, #a0a0aa 100%)",
+            background: "linear-gradient(135deg, #d0d4e8 0%, #a0aad0 30%, #e8ecf8 55%, #b0b8d8 80%, #d0d4e8 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
+            textShadow: "0 0 20px rgba(100, 150, 255, 0.1)",
+            filter: "drop-shadow(0 0 8px rgba(100, 150, 255, 0.08))",
           }}
         >
           Hein Latt Aung

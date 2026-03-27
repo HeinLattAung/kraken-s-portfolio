@@ -84,18 +84,33 @@ export function Hero() {
                   fontSize: "clamp(2.5rem, 10vw, 8rem)",
                   lineHeight: 1,
                   letterSpacing: "0.15em",
-                  color: "rgba(160, 165, 185, 0.12)",
-                  WebkitTextStroke: "1px rgba(160, 165, 185, 0.2)",
-                  textShadow: "0 0 60px rgba(20, 70, 160, 0.08), 0 0 120px rgba(20, 70, 160, 0.04)",
-                  filter: "drop-shadow(0 0 20px rgba(20, 70, 160, 0.06))",
+                  background: "linear-gradient(135deg, rgba(200, 210, 240, 0.7) 0%, rgba(120, 140, 200, 0.45) 25%, rgba(220, 225, 245, 0.85) 50%, rgba(100, 130, 200, 0.5) 75%, rgba(200, 210, 240, 0.7) 100%)",
+                  backgroundSize: "200% 200%",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  WebkitTextStroke: "1px rgba(180, 195, 230, 0.25)",
+                  textShadow: "0 0 40px rgba(100, 150, 255, 0.15), 0 0 80px rgba(20, 70, 160, 0.1), 0 0 120px rgba(0, 180, 216, 0.06)",
+                  filter: "drop-shadow(0 0 25px rgba(100, 150, 255, 0.12)) drop-shadow(0 0 50px rgba(20, 70, 160, 0.08))",
                   paintOrder: "stroke fill",
                 }}
                 initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                  filter: "blur(0px)",
+                  backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                }}
                 transition={{
                   duration: 0.8,
                   delay: 0.2 + wi * 0.15,
                   ease: [0.25, 0.46, 0.45, 0.94],
+                  backgroundPosition: {
+                    duration: 6,
+                    delay: 1 + wi * 0.3,
+                    repeat: Infinity,
+                    ease: "linear",
+                  },
                 }}
               >
                 {word}
@@ -108,7 +123,8 @@ export function Hero() {
             style={{
               width: "clamp(120px, 40vw, 400px)",
               height: "1px",
-              background: "linear-gradient(90deg, transparent, rgba(20, 70, 160, 0.4), rgba(0, 229, 255, 0.2), rgba(20, 70, 160, 0.4), transparent)",
+              background: "linear-gradient(90deg, transparent, rgba(100, 150, 255, 0.5), rgba(0, 229, 255, 0.35), rgba(100, 150, 255, 0.5), transparent)",
+              boxShadow: "0 0 15px rgba(100, 150, 255, 0.15), 0 0 30px rgba(0, 229, 255, 0.08)",
               marginBottom: "clamp(1.5rem, 3vh, 3rem)",
             }}
             initial={{ scaleX: 0, opacity: 0 }}
