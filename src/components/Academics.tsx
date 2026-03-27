@@ -18,8 +18,8 @@ function ScoreRing({ score, delay, id, grade }: { score: number; delay: number; 
     <div
       className="relative flex-shrink-0 flex items-center justify-center"
       style={{
-        width: "clamp(3rem, 7vw, 5rem)",
-        height: "clamp(3rem, 7vw, 5rem)",
+        width: "clamp(3.5rem, 7vw, 5rem)",
+        height: "clamp(3.5rem, 7vw, 5rem)",
       }}
     >
       <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full -rotate-90">

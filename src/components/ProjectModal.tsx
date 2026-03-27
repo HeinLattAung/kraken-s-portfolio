@@ -59,11 +59,17 @@ export function ProjectModal({
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
           >
-            <div className="p-8 lg:p-12">
+            <div style={{ padding: "clamp(1.25rem, 4vw, 3rem)" }}>
               {/* Close */}
               <button
                 onClick={onClose}
-                className="absolute top-6 right-6 w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/50 transition-colors"
+                className="absolute rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/50 transition-colors"
+                style={{
+                  top: "clamp(1rem, 3vw, 1.5rem)",
+                  right: "clamp(1rem, 3vw, 1.5rem)",
+                  width: "clamp(2.25rem, 5vw, 2.5rem)",
+                  height: "clamp(2.25rem, 5vw, 2.5rem)",
+                }}
               >
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                   <path
@@ -81,7 +87,14 @@ export function ProjectModal({
                 Case Study
               </span>
 
-              <h2 className="font-serif text-3xl md:text-4xl font-light mt-2 mb-10">
+              <h2
+                className="font-serif font-light"
+                style={{
+                  fontSize: "clamp(1.5rem, 5vw, 2.5rem)",
+                  marginTop: "0.5rem",
+                  marginBottom: "clamp(1.5rem, 4vw, 2.5rem)",
+                }}
+              >
                 {project.title}
               </h2>
 
@@ -99,12 +112,20 @@ export function ProjectModal({
                   transition={{ delay: 0.2 + i * 0.1 }}
                 >
                   <h3
-                    className="text-sm tracking-widest uppercase mb-3"
-                    style={{ color: project.accentColor }}
+                    className="uppercase"
+                    style={{
+                      color: project.accentColor,
+                      fontSize: "clamp(0.7rem, 1.2vw, 0.875rem)",
+                      letterSpacing: "0.15em",
+                      marginBottom: "clamp(0.5rem, 1.5vw, 0.75rem)",
+                    }}
                   >
                     {section.label}
                   </h3>
-                  <p className="text-[#aaa] text-sm leading-relaxed">
+                  <p
+                    className="text-[#aaa] leading-relaxed"
+                    style={{ fontSize: "clamp(0.8rem, 1.3vw, 0.875rem)" }}
+                  >
                     {section.content}
                   </p>
                 </motion.div>
@@ -118,17 +139,24 @@ export function ProjectModal({
                 transition={{ delay: 0.5 }}
               >
                 <h3
-                  className="text-sm tracking-widest uppercase mb-3"
-                  style={{ color: project.accentColor }}
+                  className="uppercase"
+                  style={{
+                    color: project.accentColor,
+                    fontSize: "clamp(0.7rem, 1.2vw, 0.875rem)",
+                    letterSpacing: "0.15em",
+                    marginBottom: "clamp(0.5rem, 1.5vw, 0.75rem)",
+                  }}
                 >
                   Tech Stack
                 </h3>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap" style={{ gap: "clamp(0.375rem, 1vw, 0.5rem)" }}>
                   {project.techStack.map((tech) => (
                     <span
                       key={tech}
-                      className="px-4 py-2 rounded-full text-xs border"
+                      className="rounded-full border"
                       style={{
+                        padding: "clamp(0.375rem, 1vw, 0.5rem) clamp(0.75rem, 1.5vw, 1rem)",
+                        fontSize: "clamp(0.65rem, 1.1vw, 0.75rem)",
                         borderColor: `${project.accentColor}30`,
                         color: project.accentColor,
                         background: `${project.accentColor}08`,
@@ -142,14 +170,20 @@ export function ProjectModal({
             </div>
 
             {/* Sticky Bottom Buttons */}
-            <div className="sticky bottom-0 p-6 bg-gradient-to-t from-[#0d0d0d] via-[#0d0d0d] to-transparent">
-              <div className="flex gap-4">
+            <div
+              className="sticky bottom-0 bg-gradient-to-t from-[#0d0d0d] via-[#0d0d0d] to-transparent"
+              style={{ padding: "clamp(1rem, 3vw, 1.5rem)" }}
+            >
+              <div className="flex" style={{ gap: "clamp(0.75rem, 2vw, 1rem)" }}>
                 <a
                   href={project.liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 py-3 rounded-full text-center text-xs tracking-widest uppercase font-medium"
+                  className="flex-1 rounded-full text-center uppercase font-medium"
                   style={{
+                    padding: "clamp(0.625rem, 1.5vw, 0.75rem)",
+                    fontSize: "clamp(0.65rem, 1.1vw, 0.75rem)",
+                    letterSpacing: "0.15em",
                     background: project.accentColor,
                     color: "#000",
                   }}
@@ -160,7 +194,12 @@ export function ProjectModal({
                   href={project.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 py-3 rounded-full text-center text-xs tracking-widest uppercase border border-white/20 hover:border-white/50 transition-colors"
+                  className="flex-1 rounded-full text-center uppercase border border-white/20 hover:border-white/50 transition-colors"
+                  style={{
+                    padding: "clamp(0.625rem, 1.5vw, 0.75rem)",
+                    fontSize: "clamp(0.65rem, 1.1vw, 0.75rem)",
+                    letterSpacing: "0.15em",
+                  }}
                 >
                   GitHub
                 </a>

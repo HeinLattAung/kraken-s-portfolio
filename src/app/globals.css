@@ -111,8 +111,9 @@ body::after {
 }
 
 /* dvh progressive enhancement */
-@supports (height: 100dvh) {
+@supports (min-height: 100dvh) {
   body { min-height: 100dvh; }
+  .hero-dvh { min-height: 100dvh; }
 }
 
 /* Firefox backdrop-filter fallback */

@@ -8,7 +8,7 @@ export function Contact() {
       id="contact"
       className="relative flex flex-col"
       style={{
-        minHeight: "min(60vh, 800px)",
+        minHeight: "min(60dvh, 800px)",
         padding: "clamp(3rem, 8vh, 8rem) clamp(1.25rem, 5vw, 6rem) clamp(1.5rem, 3vh, 3rem)",
       }}
     >
@@ -74,8 +74,8 @@ export function Contact() {
               data-magnetic
               className="border border-white/15 rounded-full uppercase font-sans transition-all duration-300 hover:border-[#00E5FF]/30 hover:shadow-[0_0_30px_rgba(0,229,255,0.08)] active:scale-95"
               style={{
-                padding: "clamp(0.5rem, 1.2vw, 0.875rem) clamp(1rem, 2.5vw, 1.75rem)",
-                fontSize: "clamp(0.6rem, 1.1vw, 0.8rem)",
+                padding: "clamp(0.625rem, 1.2vw, 0.875rem) clamp(1.25rem, 2.5vw, 1.75rem)",
+                fontSize: "clamp(0.65rem, 1.1vw, 0.8rem)",
                 letterSpacing: "0.12em",
               }}
             >
@@ -96,10 +96,10 @@ export function Contact() {
           gap: "clamp(0.25rem, 0.8vw, 0.75rem)",
         }}
       >
-        <p className="text-[#444] font-sans" style={{ fontSize: "clamp(0.55rem, 0.9vw, 0.7rem)", letterSpacing: "0.05em" }}>
+        <p className="text-[#444] font-sans" style={{ fontSize: "clamp(0.65rem, 0.9vw, 0.7rem)", letterSpacing: "0.05em" }}>
           &copy; {new Date().getFullYear()} Hein Latt Aung. All rights reserved.
         </p>
-        <p className="text-[#444] font-sans" style={{ fontSize: "clamp(0.55rem, 0.9vw, 0.7rem)", letterSpacing: "0.05em" }}>
+        <p className="text-[#444] font-sans" style={{ fontSize: "clamp(0.65rem, 0.9vw, 0.7rem)", letterSpacing: "0.05em" }}>
           Designed & Built with precision
         </p>
       </div>

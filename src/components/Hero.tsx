@@ -46,8 +46,8 @@ export function Hero() {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{
-        minHeight: "100vh",
-        padding: "clamp(5rem, 10vh, 8rem) clamp(1rem, 4vw, 4rem) clamp(2rem, 4vh, 4rem)",
+        minHeight: "100dvh",
+        padding: "clamp(5rem, 10vh, 8rem) clamp(0.75rem, 4vw, 4rem) clamp(2rem, 4vh, 4rem)",
       }}
     >
       {/* Background layer — obsidian shards + cobalt filaments (0.1x parallax) */}

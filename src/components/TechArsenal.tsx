@@ -14,19 +14,19 @@ const groups: SkillGroup[] = [
     category: "Frontend",
     icon: "layout",
     skills: ["Next.js", "React", "Vue.js", "JavaScript", "Tailwind CSS"],
-    span: "md:col-span-2",
+    span: "lg:col-span-2",
   },
   {
     category: "Backend / Database",
     icon: "server",
     skills: ["Node.js", "NestJS", "Express.js", "PHP", "Python", "PostgreSQL", "MongoDB", "MySQL"],
-    span: "md:col-span-2",
+    span: "lg:col-span-2",
   },
   {
     category: "Mobile",
     icon: "smartphone",
     skills: ["React Native"],
-    span: "md:col-span-1",
+    span: "sm:col-span-2 lg:col-span-1",
   },
 ];
 
@@ -90,7 +90,7 @@ export function TechArsenal() {
         </motion.div>
 
         <div
-          className="grid grid-cols-1 md:grid-cols-5"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5"
           style={{ gap: "clamp(0.75rem, 1.5vw, 1rem)" }}
         >
           {groups.map((group, gi) => (

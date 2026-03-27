@@ -248,7 +248,7 @@ function StickyProjectCard({
             <div
               className="w-full overflow-hidden border border-white/[0.06]"
               style={{
-                maxWidth: "clamp(100%, 40vw, 32rem)",
+                maxWidth: "100%",
                 borderRadius: "clamp(8px, 1.2vw, 12px)",
               }}
             >
