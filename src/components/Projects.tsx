@@ -23,7 +23,7 @@ const projects: Project[] = [
     description:
       "A full-featured anime streaming platform with real-time API integration, dynamic content loading, and an immersive user experience inspired by Netflix.",
     tags: ["React", "TypeScript", "Tailwind CSS", "REST API"],
-    liveUrl: "https://movie-library-nine-tau.vercel.app/home",
+    liveUrl: "https://movie-beryl-gamma-68.vercel.app/",
     videoSrc: "/videos/anime-demo.mp4",
     accentColor: "#E50914",
   },
