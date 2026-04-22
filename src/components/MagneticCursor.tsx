@@ -3,10 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
+type CursorVariant = "default" | "hover" | "3d";
+
 export function MagneticCursor() {
   const cursorX = useMotionValue(0);
   const cursorY = useMotionValue(0);
-  const [isHovering, setIsHovering] = useState(false);
+  const [variant, setVariant] = useState<CursorVariant>("default");
   const [isVisible, setIsVisible] = useState(false);
   const rafRef = useRef<number>(0);
 
@@ -15,8 +17,12 @@ export function MagneticCursor() {
   const y = useSpring(cursorY, springConfig);
 
   useEffect(() => {
-    // Hide on touch devices
-    if (window.matchMedia("(pointer: coarse)").matches) return;
+    // Only show on devices with a precise, hover-capable pointer (mouse/trackpad).
+    // Excludes phones and touch-only tablets; includes iPad with trackpad.
+    const supportsHover = window.matchMedia(
+      "(hover: hover) and (pointer: fine)"
+    ).matches;
+    if (!supportsHover) return;
 
     setIsVisible(true);
 
@@ -28,26 +34,26 @@ export function MagneticCursor() {
       });
     };
 
-    const onMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (
-        target.closest("a, button, [data-magnetic]") ||
-        target.tagName === "A" ||
-        target.tagName === "BUTTON"
-      ) {
-        setIsHovering(true);
+    const resolveVariant = (target: EventTarget | null): CursorVariant => {
+      if (!(target instanceof HTMLElement) && !(target instanceof SVGElement)) {
+        return "default";
       }
+      const el = target as HTMLElement;
+      if (el.closest('[data-cursor="3d"]')) return "3d";
+      if (
+        el.closest("a, button, [data-magnetic]") ||
+        el.tagName === "A" ||
+        el.tagName === "BUTTON"
+      ) {
+        return "hover";
+      }
+      return "default";
     };
 
+    const onMouseOver = (e: MouseEvent) => setVariant(resolveVariant(e.target));
     const onMouseOut = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (
-        target.closest("a, button, [data-magnetic]") ||
-        target.tagName === "A" ||
-        target.tagName === "BUTTON"
-      ) {
-        setIsHovering(false);
-      }
+      const next = resolveVariant(e.relatedTarget);
+      setVariant(next);
     };
 
     window.addEventListener("mousemove", onMouseMove);
@@ -64,22 +70,27 @@ export function MagneticCursor() {
 
   if (!isVisible) return null;
 
+  const isHover = variant === "hover";
+  const is3d = variant === "3d";
+
   return (
-    <>
+    <motion.div
+      className="fixed top-0 left-0 pointer-events-none z-[9998] mix-blend-difference"
+      style={{ x, y }}
+    >
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9998] mix-blend-difference hidden md:block"
-        style={{ x, y }}
-      >
-        <motion.div
-          className="rounded-full bg-white -translate-x-1/2 -translate-y-1/2"
-          animate={{
-            width: isHovering ? 60 : 12,
-            height: isHovering ? 60 : 12,
-            filter: isHovering ? "blur(4px)" : "blur(0px)",
-          }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
-        />
-      </motion.div>
-    </>
+        className="-translate-x-1/2 -translate-y-1/2 rounded-full"
+        animate={{
+          width: is3d ? 72 : isHover ? 60 : 12,
+          height: is3d ? 72 : isHover ? 60 : 12,
+          backgroundColor: is3d ? "rgba(255,255,255,0)" : "#ffffff",
+          borderWidth: is3d ? 1.5 : 0,
+          borderColor: "rgba(255,255,255,0.85)",
+          filter: isHover ? "blur(4px)" : "blur(0px)",
+        }}
+        transition={{ duration: 0.28, ease: [0.25, 0.46, 0.45, 0.94] }}
+        style={{ borderStyle: "solid" }}
+      />
+    </motion.div>
   );
 }

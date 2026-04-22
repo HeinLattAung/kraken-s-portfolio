@@ -90,7 +90,7 @@ export function TechArsenal() {
         </motion.div>
 
         <div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"
           style={{ gap: "clamp(0.75rem, 1.5vw, 1rem)" }}
         >
           {groups.map((group, gi) => (

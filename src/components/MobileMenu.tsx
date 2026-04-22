@@ -35,7 +35,13 @@ export function MobileMenu({
       {isOpen && (
         <motion.div
           className="fixed inset-0 bg-[#06060a] z-[90] flex flex-col items-center justify-center md:hidden"
-          style={{ touchAction: "none" }}
+          data-fullscreen="true"
+          style={{
+            touchAction: "none",
+            maxWidth: "100vw",
+            paddingTop: "env(safe-area-inset-top)",
+            paddingBottom: "env(safe-area-inset-bottom)",
+          }}
           initial={{ opacity: 0, clipPath: "circle(0% at top right)" }}
           animate={{ opacity: 1, clipPath: "circle(150% at top right)" }}
           exit={{ opacity: 0, clipPath: "circle(0% at top right)" }}

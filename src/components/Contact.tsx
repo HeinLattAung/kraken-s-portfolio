@@ -8,7 +8,7 @@ export function Contact() {
       id="contact"
       className="relative flex flex-col"
       style={{
-        minHeight: "min(60dvh, 800px)",
+        minHeight: "min(60vh, 800px)",
         padding: "clamp(3rem, 8vh, 8rem) clamp(1.25rem, 5vw, 6rem) clamp(1.5rem, 3vh, 3rem)",
       }}
     >

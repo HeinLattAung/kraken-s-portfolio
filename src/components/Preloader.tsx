@@ -81,7 +81,7 @@ function CinematicCanvas({ phaseRef }: { phaseRef: React.RefObject<string> }) {
 
       // ── Volumetric light rays from center ──
       if (t > 0.3) {
-        const rayAlpha = Math.min(0.03, (t - 0.3) * 0.015);
+        const rayAlpha = Math.min(0.1, (t - 0.3) * 0.04);
         const rayCount = 6;
         for (let i = 0; i < rayCount; i++) {
           const angle = (Math.PI * 2 / rayCount) * i + t * 0.02;
@@ -99,8 +99,8 @@ function CinematicCanvas({ phaseRef }: { phaseRef: React.RefObject<string> }) {
           );
           ctx.closePath();
           const rayGrad = ctx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, len);
-          rayGrad.addColorStop(0, `rgba(20, 70, 160, ${rayAlpha})`);
-          rayGrad.addColorStop(0.5, `rgba(15, 50, 120, ${rayAlpha * 0.5})`);
+          rayGrad.addColorStop(0, `rgba(80, 160, 255, ${rayAlpha})`);
+          rayGrad.addColorStop(0.5, `rgba(40, 110, 220, ${rayAlpha * 0.55})`);
           rayGrad.addColorStop(1, "transparent");
           ctx.fillStyle = rayGrad;
           ctx.fill();
@@ -110,10 +110,10 @@ function CinematicCanvas({ phaseRef }: { phaseRef: React.RefObject<string> }) {
       // ── Central glow orb — pulses ──
       if (t > 0.2) {
         const pulse = Math.sin(t * 1.5) * 0.3 + 0.7;
-        const orbAlpha = Math.min(0.06, (t - 0.2) * 0.02) * pulse;
+        const orbAlpha = Math.min(0.18, (t - 0.2) * 0.06) * pulse;
         const orbGrad = ctx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w * 0.3);
-        orbGrad.addColorStop(0, `rgba(30, 80, 180, ${orbAlpha})`);
-        orbGrad.addColorStop(0.4, `rgba(20, 60, 140, ${orbAlpha * 0.5})`);
+        orbGrad.addColorStop(0, `rgba(100, 170, 255, ${orbAlpha})`);
+        orbGrad.addColorStop(0.4, `rgba(50, 120, 220, ${orbAlpha * 0.55})`);
         orbGrad.addColorStop(1, "transparent");
         ctx.fillStyle = orbGrad;
         ctx.fillRect(0, 0, w, h);
@@ -132,13 +132,13 @@ function CinematicCanvas({ phaseRef }: { phaseRef: React.RefObject<string> }) {
 
         // Mote with soft glow
         ctx.beginPath();
-        ctx.arc(m.x, m.y, m.size + 2, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(100, 130, 180, ${alpha * 0.15})`;
+        ctx.arc(m.x, m.y, m.size + 3, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(130, 180, 255, ${alpha * 0.4})`;
         ctx.fill();
 
         ctx.beginPath();
         ctx.arc(m.x, m.y, m.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(170, 180, 210, ${alpha})`;
+        ctx.fillStyle = `rgba(230, 240, 255, ${Math.min(1, alpha * 2.2)})`;
         ctx.fill();
       }
 
@@ -173,10 +173,16 @@ function CinematicCanvas({ phaseRef }: { phaseRef: React.RefObject<string> }) {
         s.life -= 0.008;
         if (s.life <= 0) { sparks.splice(i, 1); continue; }
 
-        const alpha = s.life * 0.6;
+        const alpha = s.life * 0.95;
+        // Soft halo
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size * s.life * 2.4, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(120, 180, 255, ${alpha * 0.35})`;
+        ctx.fill();
+        // Core
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.size * s.life, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(80, 130, 220, ${alpha})`;
+        ctx.fillStyle = `rgba(220, 235, 255, ${alpha})`;
         ctx.fill();
       }
 
@@ -186,9 +192,9 @@ function CinematicCanvas({ phaseRef }: { phaseRef: React.RefObject<string> }) {
         const sweepX = progress * w;
         const sweepGrad = ctx.createLinearGradient(sweepX - 80, 0, sweepX + 80, 0);
         sweepGrad.addColorStop(0, "transparent");
-        sweepGrad.addColorStop(0.4, `rgba(60, 120, 220, 0.04)`);
-        sweepGrad.addColorStop(0.5, `rgba(120, 160, 240, 0.08)`);
-        sweepGrad.addColorStop(0.6, `rgba(60, 120, 220, 0.04)`);
+        sweepGrad.addColorStop(0.4, `rgba(100, 170, 255, 0.12)`);
+        sweepGrad.addColorStop(0.5, `rgba(200, 225, 255, 0.22)`);
+        sweepGrad.addColorStop(0.6, `rgba(100, 170, 255, 0.12)`);
         sweepGrad.addColorStop(1, "transparent");
         ctx.fillStyle = sweepGrad;
         ctx.fillRect(0, h * 0.3, w, h * 0.4);
@@ -196,9 +202,9 @@ function CinematicCanvas({ phaseRef }: { phaseRef: React.RefObject<string> }) {
 
       // ── Architectural grid lines (very faint) ──
       if (t > 0.8) {
-        const gridAlpha = Math.min(0.025, (t - 0.8) * 0.01);
-        ctx.strokeStyle = `rgba(80, 100, 140, ${gridAlpha})`;
-        ctx.lineWidth = 0.3;
+        const gridAlpha = Math.min(0.06, (t - 0.8) * 0.025);
+        ctx.strokeStyle = `rgba(140, 180, 240, ${gridAlpha})`;
+        ctx.lineWidth = 0.4;
         // Vertical center guides
         ctx.beginPath();
         ctx.moveTo(w * 0.2, 0); ctx.lineTo(w * 0.2, h);
@@ -210,9 +216,10 @@ function CinematicCanvas({ phaseRef }: { phaseRef: React.RefObject<string> }) {
 
       // ── Exit: radial burst ──
       if (phase === "exit") {
-        const burstAlpha = 0.1;
+        const burstAlpha = 0.22;
         const burstGrad = ctx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w * 0.5);
-        burstGrad.addColorStop(0, `rgba(30, 80, 180, ${burstAlpha})`);
+        burstGrad.addColorStop(0, `rgba(120, 180, 255, ${burstAlpha})`);
+        burstGrad.addColorStop(0.5, `rgba(40, 110, 220, ${burstAlpha * 0.5})`);
         burstGrad.addColorStop(1, "transparent");
         ctx.fillStyle = burstGrad;
         ctx.fillRect(0, 0, w, h);
@@ -271,7 +278,8 @@ function LoadingCounter({ duration, delay }: { duration: number; delay: number }
       style={{
         fontSize: "clamp(0.5rem, 0.8vw, 0.6rem)",
         letterSpacing: "0.3em",
-        color: "rgba(80, 95, 125, 0.35)",
+        color: "rgba(190, 210, 245, 0.85)",
+        textShadow: "0 0 12px rgba(100, 170, 255, 0.35)",
       }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -333,7 +341,8 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
       {phase !== "done" && (
         <motion.div
           className="fixed inset-0 z-[10000] flex flex-col items-center justify-center"
-          style={{ width: "100%", height: "100vh", background: "#030308" }}
+          style={{ width: "100%", background: "#030308" }}
+          data-fullscreen="true"
           exit={{ opacity: 0 }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
         >
@@ -343,14 +352,14 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
           {/* ── Top-left corner frame ── */}
           <motion.div
             className="absolute pointer-events-none"
-            style={{ top: "clamp(1.5rem, 4vh, 3rem)", left: "clamp(1.5rem, 4vw, 3rem)", width: "clamp(40px, 5vw, 70px)", height: "1px", background: "linear-gradient(90deg, rgba(100, 120, 160, 0.3), transparent)", transformOrigin: "left" }}
+            style={{ top: "clamp(1.5rem, 4vh, 3rem)", left: "clamp(1.5rem, 4vw, 3rem)", width: "clamp(40px, 5vw, 70px)", height: "1px", background: "linear-gradient(90deg, rgba(150, 190, 255, 0.7), transparent)", transformOrigin: "left" }}
             initial={{ scaleX: 0 }}
             animate={{ scaleX: showIgnite ? 1 : 0 }}
             transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           />
           <motion.div
             className="absolute pointer-events-none"
-            style={{ top: "clamp(1.5rem, 4vh, 3rem)", left: "clamp(1.5rem, 4vw, 3rem)", width: "1px", height: "clamp(40px, 5vh, 70px)", background: "linear-gradient(180deg, rgba(100, 120, 160, 0.3), transparent)", transformOrigin: "top" }}
+            style={{ top: "clamp(1.5rem, 4vh, 3rem)", left: "clamp(1.5rem, 4vw, 3rem)", width: "1px", height: "clamp(40px, 5vh, 70px)", background: "linear-gradient(180deg, rgba(150, 190, 255, 0.7), transparent)", transformOrigin: "top" }}
             initial={{ scaleY: 0 }}
             animate={{ scaleY: showIgnite ? 1 : 0 }}
             transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
@@ -359,14 +368,14 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
           {/* ── Bottom-right corner frame ── */}
           <motion.div
             className="absolute pointer-events-none"
-            style={{ bottom: "clamp(1.5rem, 4vh, 3rem)", right: "clamp(1.5rem, 4vw, 3rem)", width: "clamp(40px, 5vw, 70px)", height: "1px", background: "linear-gradient(270deg, rgba(100, 120, 160, 0.3), transparent)", transformOrigin: "right" }}
+            style={{ bottom: "clamp(1.5rem, 4vh, 3rem)", right: "clamp(1.5rem, 4vw, 3rem)", width: "clamp(40px, 5vw, 70px)", height: "1px", background: "linear-gradient(270deg, rgba(150, 190, 255, 0.7), transparent)", transformOrigin: "right" }}
             initial={{ scaleX: 0 }}
             animate={{ scaleX: showIgnite ? 1 : 0 }}
             transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
           />
           <motion.div
             className="absolute pointer-events-none"
-            style={{ bottom: "clamp(1.5rem, 4vh, 3rem)", right: "clamp(1.5rem, 4vw, 3rem)", width: "1px", height: "clamp(40px, 5vh, 70px)", background: "linear-gradient(0deg, rgba(100, 120, 160, 0.3), transparent)", transformOrigin: "bottom" }}
+            style={{ bottom: "clamp(1.5rem, 4vh, 3rem)", right: "clamp(1.5rem, 4vw, 3rem)", width: "1px", height: "clamp(40px, 5vh, 70px)", background: "linear-gradient(0deg, rgba(150, 190, 255, 0.7), transparent)", transformOrigin: "bottom" }}
             initial={{ scaleY: 0 }}
             animate={{ scaleY: showIgnite ? 1 : 0 }}
             transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
@@ -401,7 +410,10 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
               style={{
                 width: "100%",
                 height: "100%",
-                background: "linear-gradient(90deg, transparent 0%, rgba(20, 70, 160, 0.6) 20%, rgba(160, 175, 210, 0.5) 50%, rgba(20, 70, 160, 0.6) 80%, transparent 100%)",
+                background:
+                  "linear-gradient(90deg, transparent 0%, rgba(60, 140, 255, 0.9) 20%, rgba(220, 235, 255, 0.95) 50%, rgba(60, 140, 255, 0.9) 80%, transparent 100%)",
+                boxShadow:
+                  "0 0 12px rgba(80, 160, 255, 0.5), 0 0 28px rgba(0, 200, 255, 0.25)",
               }}
             />
             {/* Animated shimmer on the line */}
@@ -411,7 +423,8 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
                 top: "-1px",
                 height: "3px",
                 width: "clamp(40px, 8vw, 60px)",
-                background: "linear-gradient(90deg, transparent, rgba(180, 200, 240, 0.6), transparent)",
+                background:
+                  "linear-gradient(90deg, transparent, rgba(220, 235, 255, 0.95), transparent)",
                 filter: "blur(1px)",
               }}
               animate={{ left: ["-10%", "110%"] }}
@@ -429,7 +442,8 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
                 transform: "translate(-50%, -50%)",
                 width: "clamp(300px, 50vw, 600px)",
                 height: "120px",
-                background: "radial-gradient(ellipse, rgba(20, 70, 160, 0.07) 0%, transparent 70%)",
+                background:
+                  "radial-gradient(ellipse, rgba(60, 130, 240, 0.28) 0%, rgba(0, 180, 255, 0.12) 40%, transparent 75%)",
                 filter: "blur(30px)",
                 zIndex: 1,
               }}
@@ -446,7 +460,7 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
               top: "35%",
               left: "clamp(2rem, 8vw, 6rem)",
               width: "1px",
-              background: "linear-gradient(180deg, transparent, rgba(40, 80, 160, 0.15), transparent)",
+              background: "linear-gradient(180deg, transparent, rgba(100, 170, 255, 0.4), transparent)",
               transformOrigin: "top",
             }}
             initial={{ height: 0 }}
@@ -459,7 +473,7 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
               top: "35%",
               right: "clamp(2rem, 8vw, 6rem)",
               width: "1px",
-              background: "linear-gradient(180deg, transparent, rgba(40, 80, 160, 0.15), transparent)",
+              background: "linear-gradient(180deg, transparent, rgba(100, 170, 255, 0.4), transparent)",
               transformOrigin: "top",
             }}
             initial={{ height: 0 }}
@@ -498,9 +512,12 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
                           style={{
                             fontSize: "clamp(2rem, 8vw, 6.5rem)",
                             letterSpacing: "0.18em",
-                            color: "rgba(200, 210, 230, 0.12)",
-                            WebkitTextStroke: "0.5px rgba(140, 155, 190, 0.18)",
-                            textShadow: "0 0 60px rgba(20, 70, 160, 0.12), 0 4px 30px rgba(0,0,0,0.3)",
+                            color: "rgba(235, 242, 255, 0.92)",
+                            WebkitTextStroke: "0.5px rgba(210, 225, 255, 0.6)",
+                            textShadow:
+                              "0 0 50px rgba(120, 170, 255, 0.55), 0 0 100px rgba(30, 100, 220, 0.35), 0 0 160px rgba(0, 200, 255, 0.2), 0 4px 30px rgba(0,0,0,0.4)",
+                            filter:
+                              "drop-shadow(0 0 25px rgba(140, 180, 255, 0.3))",
                             paintOrder: "stroke fill",
                           }}
                           initial={{ y: "120%", opacity: 0, rotateX: 50 }}
@@ -542,7 +559,8 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
                     top: 0,
                     width: "clamp(50px, 10vw, 80px)",
                     height: "100%",
-                    background: "linear-gradient(90deg, transparent, rgba(120, 160, 230, 0.08), rgba(180, 200, 240, 0.12), rgba(120, 160, 230, 0.08), transparent)",
+                    background:
+                      "linear-gradient(90deg, transparent, rgba(140, 190, 255, 0.35), rgba(230, 240, 255, 0.5), rgba(140, 190, 255, 0.35), transparent)",
                     filter: "blur(4px)",
                   }}
                   initial={{ left: "-15%" }}
@@ -559,7 +577,9 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
                 <motion.div
                   style={{
                     height: "1px",
-                    background: "linear-gradient(90deg, transparent, rgba(60, 90, 150, 0.3), transparent)",
+                    background:
+                      "linear-gradient(90deg, transparent, rgba(140, 190, 255, 0.75), rgba(0, 229, 255, 0.6), rgba(140, 190, 255, 0.75), transparent)",
+                    boxShadow: "0 0 10px rgba(100, 170, 255, 0.35)",
                     marginBottom: "clamp(0.4rem, 0.8vh, 0.6rem)",
                   }}
                   initial={{ width: 0 }}
@@ -571,7 +591,9 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
                   style={{
                     fontSize: "clamp(0.5rem, 1vw, 0.7rem)",
                     letterSpacing: "0.7em",
-                    color: "rgba(100, 115, 145, 0.4)",
+                    color: "rgba(210, 225, 255, 0.9)",
+                    textShadow:
+                      "0 0 18px rgba(120, 180, 255, 0.45), 0 0 32px rgba(0, 200, 255, 0.18)",
                   }}
                   initial={{ opacity: 0, y: 12, letterSpacing: "1.5em" }}
                   animate={{ opacity: 1, y: 0, letterSpacing: "0.7em" }}
@@ -583,7 +605,8 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
                 <motion.div
                   style={{
                     height: "1px",
-                    background: "linear-gradient(90deg, transparent, rgba(60, 90, 150, 0.2), transparent)",
+                    background:
+                      "linear-gradient(90deg, transparent, rgba(100, 170, 255, 0.55), transparent)",
                     marginTop: "clamp(0.2rem, 0.4vh, 0.4rem)",
                   }}
                   initial={{ width: 0 }}
@@ -612,18 +635,18 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
               style={{
                 fontSize: "clamp(0.4rem, 0.65vw, 0.5rem)",
                 letterSpacing: "0.4em",
-                color: "rgba(70, 80, 105, 0.3)",
+                color: "rgba(190, 210, 245, 0.85)",
               }}
             >
               PORTFOLIO
             </span>
-            <span style={{ width: "clamp(20px, 3vw, 40px)", height: "1px", background: "rgba(70, 80, 105, 0.15)" }} />
+            <span style={{ width: "clamp(20px, 3vw, 40px)", height: "1px", background: "rgba(150, 190, 255, 0.55)" }} />
             <span
               className="font-sans tabular-nums"
               style={{
                 fontSize: "clamp(0.4rem, 0.65vw, 0.5rem)",
                 letterSpacing: "0.3em",
-                color: "rgba(70, 80, 105, 0.3)",
+                color: "rgba(190, 210, 245, 0.85)",
               }}
             >
               {new Date().getFullYear()}
